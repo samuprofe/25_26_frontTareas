@@ -1,23 +1,30 @@
-
+// src/api/tareasAPI.js
 const API_URL = "http://localhost:8080/api/tareas";
 
-/**
- * GET /api/tareas
- * Obtiene todas las tareas desde la API
- */
+// Función para obtener las tareas desde la API
 export async function cargarTareas() {
-  try {
-    const response = await fetch(API_URL);
-
-    if (!response.ok) {
-      console.error("Error al cargar tareas");
-    }
-
-    const data = await response.json();
-    
-    return data;
-
-  } catch (error) {
-    console.error(error);
-  }
+  const response = await fetch(API_URL);
+  if (!response.ok) throw new Error("Error al cargar tareas");
+  return await response.json();
 }
+
+// Función para crear una nueva tarea en la API
+export async function crearTarea(texto) {
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ texto, finalizada: false }),
+  });
+
+  if (!response.ok) throw new Error("Error al crear tarea");
+  return await response.json(); // devuelve la tarea creada (con id)
+}
+
+// Función para borrar una tarea en la API
+export async function borrarTareaAPI(id) {
+  const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+  if (!response.ok) throw new Error("Error al borrar tarea");
+  return true;
+}
+
+// Función para actualizar el estado de finalización de una tarea en la API
