@@ -27,4 +27,22 @@ export async function borrarTareaAPI(id) {
   return true;
 }
 
-// Función para actualizar el estado de finalización de una tarea en la API
+// Función para marcar una tarea como finalizada/no finalizada
+export async function toggleFinalizadaAPI(id) {
+  const response = await fetch(`${API_URL}/${id}/finalizar`, {
+    method: "PATCH",
+  });
+  if (!response.ok) throw new Error("Error al actualizar tarea");
+  return await response.json();
+}
+
+// Función para actualizar una tarea completa
+export async function actualizarTareaAPI(id, datos) {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(datos),
+  });
+  if (!response.ok) throw new Error("Error al actualizar tarea");
+  return await response.json();
+}
